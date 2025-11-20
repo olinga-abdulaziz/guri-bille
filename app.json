@@ -4,7 +4,7 @@
     "slug": "guri-bille",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/appicon.png",
     "scheme": "guribille",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -43,6 +43,9 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "BASE_URL": "https://guribille.com"
     }
   }
 }
