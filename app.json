@@ -8,13 +8,14 @@
     "scheme": "guribille",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.smartwebkenya.guribille",
-      "buildNumber": "1"
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
-
     "android": {
       "package": "com.smartwebkenya.guribille",
       "adaptiveIcon": {
@@ -26,12 +27,10 @@
       "predictiveBackGestureEnabled": false,
       "versionCode": 1
     },
-
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-
     "updates": {
       "url": "https://u.expo.dev/85494e32-f5cb-4902-a1d0-815a1722ce2a",
       "fallbackToCacheTimeout": 0,
@@ -39,11 +38,9 @@
         "expo-channel-name": "production"
       }
     },
-
     "runtimeVersion": {
       "policy": "appVersion"
     },
-
     "plugins": [
       "expo-router",
       [
@@ -60,19 +57,16 @@
       ],
       "expo-updates"
     ],
-
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
-
     "extra": {
       "BASE_URL": "https://guribille.com",
       "eas": {
         "projectId": "85494e32-f5cb-4902-a1d0-815a1722ce2a"
       }
     },
-
     "splash": {
       "image": "./assets/images/appicon.png",
       "resizeMode": "contain",
