@@ -8,29 +8,48 @@
     "scheme": "guribille",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.smartwebkenya.guribille",
+      "buildNumber": "1"
     },
+
     "android": {
+      "package": "com.smartwebkenya.guribille",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/appicon.png",
+        "backgroundColor": "#E6F4FE"
       },
+      "permissions": [],
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "versionCode": 1
     },
+
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
+
+    "updates": {
+      "url": "https://u.expo.dev/85494e32-f5cb-4902-a1d0-815a1722ce2a",
+      "fallbackToCacheTimeout": 0,
+      "requestHeaders": {
+        "expo-channel-name": "production"
+      }
+    },
+
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/appicon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
@@ -38,14 +57,26 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-updates"
     ],
+
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
+
     "extra": {
-      "BASE_URL": "https://guribille.com"
+      "BASE_URL": "https://guribille.com",
+      "eas": {
+        "projectId": "85494e32-f5cb-4902-a1d0-815a1722ce2a"
+      }
+    },
+
+    "splash": {
+      "image": "./assets/images/appicon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
     }
   }
 }
