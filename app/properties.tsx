@@ -17,6 +17,7 @@ const { BASE_URL } = Constants.expoConfig?.extra || {};
 type RouteParams = {
   locationId?: string;
   bedrooms?: string;
+  bName?: string;
 };
 
 interface Property {
@@ -126,7 +127,7 @@ const SkeletonLoader = () => {
 export default function Properties() {
   const params = useLocalSearchParams<RouteParams>();
   const router = useRouter();
-  const { locationId, bedrooms } = params;
+  const { locationId, bedrooms, bName } = params;
 
   const [properties, setProperties] = useState<Property[]>([]);
   const [zones, setZones] = useState<Array<{ id: number; name: string; slug: string }>>([]);
@@ -147,9 +148,8 @@ export default function Properties() {
         setError(null);
         setProperties([]);
 
-        const apiUrl = `${BASE_URL}/api/v1/houses?location_id=${locationIdToUse}${
-          bedrooms ? `&bedroom_id=${bedrooms}` : ""
-        }`;
+        const apiUrl = `${BASE_URL}/api/v1/houses?location_id=${locationIdToUse}${bedrooms ? `&bedroom_id=${bedrooms}` : ""
+          }`;
 
         const response = await fetch(apiUrl);
         const responseText = await response.text();
@@ -407,63 +407,63 @@ export default function Properties() {
                       elevation: 3,
                     }}
                   >
-                  {/* Image */}
-                  <View style={{ height: 150, width: "100%" }}>
-                    {property.primary_photo ? (
-                      <Image
-                        source={{
-                          uri: `${BASE_URL}/${property.primary_photo}`,
-                        }}
+                    {/* Image */}
+                    <View style={{ height: 150, width: "100%" }}>
+                      {property.primary_photo ? (
+                        <Image
+                          source={{
+                            uri: `${BASE_URL}/${property.primary_photo}`,
+                          }}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            borderTopLeftRadius: 15,
+                            borderTopRightRadius: 15,
+                          }}
+                          contentFit="cover"
+                        />
+                      ) : (
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: "#f5f5f5",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderTopLeftRadius: 15,
+                            borderTopRightRadius: 15,
+                          }}
+                        >
+                          <Ionicons name="home" size={50} color="#ccc" />
+                        </View>
+                      )}
+                    </View>
+
+                    {/* Details */}
+                    <View style={{ padding: 15 }}>
+                      <Text
                         style={{
-                          width: "100%",
-                          height: "100%",
-                          borderTopLeftRadius: 15,
-                          borderTopRightRadius: 15,
-                        }}
-                        contentFit="cover"
-                      />
-                    ) : (
-                      <View
-                        style={{
-                          flex: 1,
-                          backgroundColor: "#f5f5f5",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderTopLeftRadius: 15,
-                          borderTopRightRadius: 15,
+                          fontSize: 18,
+                          fontWeight: "600",
+                          marginBottom: 8,
+                          color: 'gray'
                         }}
                       >
-                        <Ionicons name="home" size={50} color="#ccc" />
-                      </View>
-                    )}
-                  </View>
-
-                  {/* Details */}
-                  <View style={{ padding: 15 }}>
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontWeight: "600",
-                        marginBottom: 8,
-                        color:'gray'
-                      }}
-                    >
-                      {property.unique_id}
-                    </Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 8,
-                        marginBottom: 8,
-                      }}
-                    >
-                      <Ionicons name="location" size={16} color="#109FC6" />
-                      <Text style={{ fontSize: 14,  }}>
-                        {property.location?.name || "Location not specified"}
+                        {property.unique_id}
                       </Text>
-                    </View>
-{/* 
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 8,
+                          marginBottom: 8,
+                        }}
+                      >
+                        <Ionicons name="location" size={16} color="#109FC6" />
+                        <Text style={{ fontSize: 14, }}>
+                          {property.location?.name || "Location not specified"}
+                        </Text>
+                      </View>
+                      {/* 
                     {property.description && (
                       <Text
                         style={{
@@ -477,82 +477,82 @@ export default function Properties() {
                         {property.description}
                       </Text>
                     )} */}
-                    <View
-                      style={{
-                        // flexDirection: "row",
-                        // alignItems: "center",
-                        gap: 6,
-                        marginBottom: 12,
-                        backgroundColor: "#f8f9fa",
-                        paddingVertical: 8,
-                        paddingHorizontal: 12,
-                        borderRadius: 8,
-                        alignSelf: "flex-start",
-                      }}
-                    >
-                      <Text
+                      <View
                         style={{
-                          fontSize: 18,
-                          fontWeight: "700",
-                          color: "#2c3e50",
+                          // flexDirection: "row",
+                          // alignItems: "center",
+                          gap: 6,
+                          marginBottom: 12,
+                          backgroundColor: "#f8f9fa",
+                          paddingVertical: 8,
+                          paddingHorizontal: 12,
+                          borderRadius: 8,
+                          alignSelf: "flex-start",
                         }}
                       >
-                        Ksh. {property.room_cost?.toLocaleString()}
-                      </Text>
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            fontWeight: "700",
+                            color: "#2c3e50",
+                          }}
+                        >
+                          Ksh. {property.room_cost?.toLocaleString()}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            color: "#7f8c8d",
+                            backgroundColor: "#e9ecef",
+                            paddingHorizontal: 8,
+                            paddingVertical: 2,
+                            borderRadius: 4,
+                          }}
+                        >
+                          {property.room_billing_cycle?.toLowerCase()}{" "}
+                        </Text>
+                      </View>
+
                       <Text
                         style={{
-                          fontSize: 14,
-                          color: "#7f8c8d",
-                          backgroundColor: "#e9ecef",
-                          paddingHorizontal: 8,
-                          paddingVertical: 2,
-                          borderRadius: 4,
+                          fontSize: 12,
+                          fontWeight: "bold",
+                          color: "#109FC6",
+                          marginBottom: 12,
                         }}
                       >
-                        {property.room_billing_cycle?.toLowerCase()}{" "}
+                        {bName}
                       </Text>
+
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: "#109FC6",
+                          paddingVertical: 12,
+                          borderRadius: 10,
+                          alignItems: "center",
+                        }}
+                        onPress={() => {
+                          const params: any = { propertyId: property.id };
+                          if (bedrooms) {
+                            params.bedrooms = bedrooms;
+                          }
+                          router.push({
+                            pathname: "/propertyDetails",
+                            params,
+                          });
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: "600",
+                            color: "white",
+                          }}
+                        >
+                          View Details
+                        </Text>
+                      </TouchableOpacity>
                     </View>
-
-                    {/* <Text
-                      style={{
-                        fontSize: 24,
-                        fontWeight: "bold",
-                        color: "#109FC6",
-                        marginBottom: 12,
-                      }}
-                    >
-                      View Details
-                    </Text> */}
-
-                    <TouchableOpacity
-                      style={{
-                        backgroundColor: "#109FC6",
-                        paddingVertical: 12,
-                        borderRadius: 10,
-                        alignItems: "center",
-                      }}
-                      onPress={() => {
-                        const params: any = { propertyId: property.id };
-                        if (bedrooms) {
-                          params.bedrooms = bedrooms;
-                        }
-                        router.push({
-                          pathname: "/propertyDetails",
-                          params,
-                        });
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "600",
-                          color: "white",
-                        }}
-                      >
-                        View Details
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
                   </View>
                 ))}
               </View>

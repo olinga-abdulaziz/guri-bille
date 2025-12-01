@@ -368,7 +368,7 @@ return (
     if (!property) return;
     
     const whatsapp_number = property.whatsapp_number || '+254769210601';
-    const platform = property.platform || 'GoHome';
+    const platform =  'Guri Bille'; //property.platform ||
     const room_type_slug = property.rooms[0]?.room_type?.slug || 'room';
     const property_url = property.house_room_url || `${BASE_URL}/houses/${property.slug}`;
     const unique_id = await AsyncStorage.getItem("unique_user_id").then(stored => 

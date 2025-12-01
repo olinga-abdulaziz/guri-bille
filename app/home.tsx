@@ -43,7 +43,7 @@ export default function Home() {
       const response = await fetch(`${BASE_URL}/api/v1/taxonomies/room`);
       // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
-      
+
       if (data.success && Array.isArray(data.data)) {
         setBedrooms(data.data);
       } else {
@@ -53,7 +53,7 @@ export default function Home() {
       console.error('Error fetching bedroom options:', err);
     }
   };
-    
+
   const fetchLocations = async () => {
     setLoading(true);
     try {
@@ -126,15 +126,19 @@ export default function Home() {
 
   const handleSearch = () => {
     if (!selectedLocation) return;
-    
+
     const params: Record<string, string> = {
       locationId: selectedLocation.id.toString(),
     };
-    
+
     if (selectedBedrooms !== null) {
       params.bedrooms = selectedBedrooms.toString();
+      const selectedBedroomName = bedrooms.find(b => b.id === selectedBedrooms)?.name;
+      if (selectedBedroomName) {
+        params.bName = selectedBedroomName;
+      }
     }
-    
+
     router.push({
       pathname: "/properties",
       params: {
@@ -146,7 +150,7 @@ export default function Home() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-      <ScrollView 
+      <ScrollView
         style={{
           flex: 1,
         }}
@@ -157,189 +161,188 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
       >
 
-      {/* top banner */}
-      <View style={{ height: 190 }}>
-        <ImageBackground
-          source={require("../assets/images/home.webp")}
-          style={{
-            width: "100%",
-            height: "100%",
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View
+        {/* top banner */}
+        <View style={{ height: 190 }}>
+          <ImageBackground
+            source={require("../assets/images/home.webp")}
             style={{
-              position: "absolute",
               width: "100%",
               height: "100%",
-              backgroundColor: "rgba(255, 254, 254, 0.6)",
               borderBottomLeftRadius: 20,
               borderBottomRightRadius: 20,
-            }}
-          />
-          <Text style={{ fontSize: 25, fontWeight: "bold", color: "black", textAlign: "center", padding: 10 }}>
-            GURI BILLE
-          </Text>
-          <Text
-            style={{
-              fontSize: 20,
-              color: "#423938",
-              textAlign: "center",
-              padding: 15,
-              marginTop:-10,
-              marginBottom:30
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            SO DHAWOW - RAADSO GURIGA AAD RABTO SI FUDUD MACAAMIIL
-          </Text>
-        </ImageBackground>
-      </View>
+            <View
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(255, 254, 254, 0.6)",
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
+              }}
+            />
+            <Text style={{ fontSize: 25, fontWeight: "bold", color: "black", textAlign: "center", padding: 10 }}>
+              GURI BILLE
+            </Text>
+            <Text
+              style={{
+                fontSize: 20,
+                color: "#423938",
+                textAlign: "center",
+                padding: 15,
+                marginTop: -10,
+                marginBottom: 30
+              }}
+            >
+              SO DHAWOW - RAADSO GURIGA AAD RABTO SI FUDUD MACAAMIIL
+            </Text>
+          </ImageBackground>
+        </View>
 
-      {/* body */}
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "white",
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          width: "95%",
-          alignSelf: "center",
-          marginTop: -50,
-          padding: 20,
-        }}
-      >
+        {/* body */}
         <View
           style={{
             flex: 1,
             backgroundColor: "white",
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
-            padding: 2,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            width: "95%",
+            alignSelf: "center",
+            marginTop: -50,
+            padding: 20,
           }}
         >
-          <View>
-            {/* location header */}
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-              <Ionicons name="location" size={20} color="#109FC6" />
-              <Text style={{ fontSize: 20, fontWeight: "bold", color: "rgba(0, 0, 0, 0.7)" }}>
-                Select Location
-              </Text>
-            </View>
-
-            {/* Locations */}
-            {loading ? (
-              <SkeletonLoader />
-            ) : error ? (
-              <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 20 }}>
-                <Text style={{ color: "red" }}>{error}</Text>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "white",
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+              padding: 2,
+            }}
+          >
+            <View>
+              {/* location header */}
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                <Ionicons name="location" size={20} color="#109FC6" />
+                <Text style={{ fontSize: 20, fontWeight: "bold", color: "rgba(0, 0, 0, 0.7)" }}>
+                  Select Location
+                </Text>
               </View>
-            ) : (
-              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10, marginTop: 15 }}>
-  {locations.map((location, index) => (
-    <TouchableOpacity
-      key={location.id}
-      onPress={() => setSelectedLocation(location)}
-      style={{
-        flex: 1,
-        flexBasis: index === 0 ? "100%" : "47%",  // Make first one full width
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor:
-          selectedLocation?.id === location.id ? "#109FC6" : "rgba(0, 0, 0, 0.2)",
-        backgroundColor:
-          selectedLocation?.id === location.id ? "#109FC6" : "transparent",
-      }}
-    >
-      <Text
-        style={{
-          fontSize: 18,
-          fontWeight: "900",
-          color:
-            selectedLocation?.id === location.id
-              ? "white"
-              : "rgba(0, 0, 0, 0.7)",
-          textAlign: "center",
-        }}
-      >
-        {location.name}
-      </Text>
-    </TouchableOpacity>
-  ))}
-</View>
 
-            )}
-          </View>
+              {/* Locations */}
+              {loading ? (
+                <SkeletonLoader />
+              ) : error ? (
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 20 }}>
+                  <Text style={{ color: "red" }}>{error}</Text>
+                </View>
+              ) : (
+                <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10, marginTop: 15 }}>
+                  {locations.map((location, index) => (
+                    <TouchableOpacity
+                      key={location.id}
+                      onPress={() => setSelectedLocation(location)}
+                      style={{
+                        flex: 1,
+                        flexBasis: index === 0 ? "100%" : "47%",  // Make first one full width
+                        paddingVertical: 12,
+                        paddingHorizontal: 16,
+                        borderRadius: 10,
+                        borderWidth: 1,
+                        borderColor:
+                          selectedLocation?.id === location.id ? "#109FC6" : "rgba(0, 0, 0, 0.2)",
+                        backgroundColor:
+                          selectedLocation?.id === location.id ? "#109FC6" : "transparent",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontWeight: "900",
+                          color:
+                            selectedLocation?.id === location.id
+                              ? "white"
+                              : "rgba(0, 0, 0, 0.7)",
+                          textAlign: "center",
+                        }}
+                      >
+                        {location.name}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
 
-          {/* Bedrooms */}
-          <View style={{ marginTop: 60 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-              <Ionicons name="bed" size={20} color="#109FC6" />
-              <Text style={{ fontSize: 20, fontWeight: "bold", color: "rgba(0, 0, 0, 0.7)" }}>
-                Number of Bedrooms
-              </Text>
+              )}
             </View>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10, marginTop: 35 }}>
-              {bedrooms.map((bedroom) => (
-                <TouchableOpacity
-                  key={bedroom.id}
-                  onPress={() => handleBedroomSelect(bedroom)}
-                  style={{
-                    backgroundColor:
-                      selectedBedrooms === bedroom.id ? "#109FC6" : "#f5f5f5",
-                    padding: 10,
-                    borderRadius: 10,
-                    minWidth: 80,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text
+
+            {/* Bedrooms */}
+            <View style={{ marginTop: 60 }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                <Ionicons name="bed" size={20} color="#109FC6" />
+                <Text style={{ fontSize: 20, fontWeight: "bold", color: "rgba(0, 0, 0, 0.7)" }}>
+                  Number of Bedrooms
+                </Text>
+              </View>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10, marginTop: 35 }}>
+                {bedrooms.map((bedroom) => (
+                  <TouchableOpacity
+                    key={bedroom.id}
+                    onPress={() => handleBedroomSelect(bedroom)}
                     style={{
-                       fontSize: 18,
-                      color: selectedBedrooms === bedroom.id ? "white" : "#333",
-                      fontWeight: "900",
+                      backgroundColor:
+                        selectedBedrooms === bedroom.id ? "#109FC6" : "#f5f5f5",
+                      padding: 10,
+                      borderRadius: 10,
+                      minWidth: 80,
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
-                    {bedroom.name}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: selectedBedrooms === bedroom.id ? "white" : "#333",
+                        fontWeight: "900",
+                      }}
+                    >
+                      {bedroom.name}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+
+            {/* Search Button */}
+            <View style={{ marginTop: 60 }}>
+              <TouchableOpacity
+                onPress={handleSearch}
+                disabled={!selectedLocation || !selectedBedrooms}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
+                  paddingVertical: 16,
+                  paddingHorizontal: 20,
+                  borderRadius: 10,
+                  backgroundColor:
+                    selectedLocation && selectedBedrooms ? "#109FC6" : "#cccccc",
+                  opacity: selectedLocation && selectedBedrooms ? 1 : 0.7,
+                }}
+              >
+                <Ionicons name="search" size={24} color="white" />
+                <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
+                  RAADI GURIGA
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
-
-          {/* Search Button */}
-          <View style={{ marginTop: 60 }}>
-            <TouchableOpacity
-              onPress={handleSearch}
-              disabled={!selectedLocation || !selectedBedrooms}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 10,
-                paddingVertical: 16,
-                paddingHorizontal: 20,
-                borderRadius: 10,
-                backgroundColor:
-                  selectedLocation && selectedBedrooms ? "#109FC6" : "#cccccc",
-                opacity: selectedLocation && selectedBedrooms ? 1 : 0.7,
-              }}
-            >
-              <Ionicons name="search" size={24} color="white" />
-              <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
-                RAADI GURIGA
-              </Text>
-            </TouchableOpacity>
-          </View>
         </View>
-      </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
- 
