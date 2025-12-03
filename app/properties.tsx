@@ -43,7 +43,8 @@ interface Property {
 const SkeletonLoader = () => {
   const opacity = new Animated.Value(0.3);
 
-  useEffect(() => {
+useEffect(() => {
+    
     Animated.loop(
       Animated.sequence([
         Animated.timing(opacity, {
